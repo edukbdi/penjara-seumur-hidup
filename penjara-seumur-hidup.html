@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Penjara Seumur Hidup: Sampai Mati, Bukan Seumur Pelaku | KBDI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ───────── TOKENS: TEMA HUKUM (gelap default) ───────── */
+    :root {
+      --bg:          #0f1216;
+      --bg2:         #161b22;
+      --surface:     #1a212b;
+      --surface2:    #20283340;
+      --border:      rgba(100,116,139,0.18);
+      --border-accent: rgba(168,50,45,0.35);
+      --text:        #d8dee6;
+      --text2:       #8b97a7;
+      --accent:      #c14138;          /* merah-bata */
+      --accent-deep: #a8322d;
+      --accent-soft: rgba(193,65,56,0.12);
+      --steel:       #64748b;          /* abu-baja: jeruji & garis waktu */
+      --steel-soft:  rgba(100,116,139,0.14);
+      --heading:     #f1f4f8;
+      --shadow:      0 8px 40px rgba(0,0,0,0.35);
+    }
+    html.light {
+      --bg:          #f5f3ef;          /* putih gading */
+      --bg2:         #ebe8e1;
+      --surface:     #ffffff;
+      --surface2:    #f0ede7;
+      --border:      rgba(100,116,139,0.22);
+      --border-accent: rgba(155,44,44,0.3);
+      --text:        #2a2d34;
+      --text2:       #5a6472;
+      --accent:      #9b2c2c;
+      --accent-deep: #842323;
+      --accent-soft: rgba(155,44,44,0.08);
+      --steel:       #5b6776;
+      --steel-soft:  rgba(91,103,118,0.12);
+      --heading:     #1a1d24;
+      --shadow:      0 8px 32px rgba(40,40,40,0.1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 17px;
+      line-height: 1.8;
+      transition: background 0.4s, color 0.4s;
+      overflow-x: hidden;
+    }
+
+    /* ───────── LAYOUT ───────── */
+    .wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 20px 90px;
+    }
+
+    /* ───────── HERO (full-bleed, pola KBDI) ───────── */
+    .hero {
+      position: relative;
+      min-height: 88vh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      /* hero selalu gelap, walau mode terang aktif */
+      background: linear-gradient(165deg, #14181d 0%, #0d1013 55%, #1a0f0e 100%);
+    }
+    .hero-bg-art {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .hero-bg-art svg { width: 100%; height: 100%; display: block; }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      padding: 5rem 6% 4.5rem;
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #d96a60;
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.1s forwards;
+    }
+    .eyebrow::before {
+      content: '';
+      width: 30px; height: 2px;
+      background: #c14138;
+      border-radius: 2px;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      font-size: clamp(3rem, 9vw, 6rem);
+      line-height: 0.96;
+      letter-spacing: 0.015em;
+      color: #f1f4f8;
+      margin-bottom: 1.1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.22s forwards;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: #d96a60;
+    }
+    .hero-sub {
+      font-family: 'Source Serif 4', serif;
+      font-style: italic;
+      font-size: clamp(1.02rem, 2.4vw, 1.28rem);
+      color: #9aa6b4;
+      max-width: 540px;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.36s forwards;
+    }
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem 1rem;
+      align-items: center;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      color: #6b7685;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.5s forwards;
+    }
+    .hero-meta .pill {
+      padding: 5px 13px;
+      border: 1px solid rgba(193,65,56,0.4);
+      border-radius: 20px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: #d96a60;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+    }
+    .hero-meta span:not(.pill) { display: inline-flex; align-items: center; gap: 6px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ───────── LEAD / OPENING ───────── */
+    .lead-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.3rem, 3.4vw, 1.7rem);
+      line-height: 1.5;
+      color: var(--heading);
+      text-align: center;
+      margin: 52px auto 8px;
+      max-width: 600px;
+    }
+    .lead-quote .dash {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    /* ───────── SECTION HEADINGS ───────── */
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(1.45rem, 3.6vw, 1.95rem);
+      color: var(--heading);
+      line-height: 1.25;
+      margin: 56px 0 18px;
+      padding-left: 18px;
+      border-left: 4px solid var(--accent);
+    }
+    h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.01em;
+      color: var(--heading);
+      margin: 30px 0 10px;
+    }
+
+    p { margin-bottom: 20px; }
+    p a, .refs a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--border-accent); }
+    p a:hover, .refs a:hover { color: var(--accent-deep); }
+
+    strong { color: var(--heading); font-weight: 600; }
+    em { color: var(--text); }
+
+    /* ───────── ANSWER CALLOUT ───────── */
+    .answer {
+      background: var(--accent-soft);
+      border: 1px solid var(--border-accent);
+      border-left: 4px solid var(--accent);
+      border-radius: 12px;
+      padding: 26px 28px;
+      margin: 28px 0;
+    }
+    .answer p { margin: 0; font-size: 1.08rem; }
+    .answer strong { color: var(--accent); }
+
+    /* ───────── LAW CARD ───────── */
+    .law {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 26px;
+      margin: 22px 0;
+    }
+    .law-tag {
+      display: inline-block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--steel);
+      background: var(--steel-soft);
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+    .law p { margin: 0; font-size: 0.98rem; line-height: 1.75; }
+    .law .quote { font-style: italic; color: var(--text); }
+
+    /* ───────── MID-ARTICLE SVG ───────── */
+    .figure {
+      margin: 38px 0;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--bg2);
+    }
+    .figure svg { display: block; width: 100%; height: auto; }
+    .figure figcaption {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--text2);
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .figure figcaption strong { color: var(--accent); }
+
+    /* ───────── KALKULATOR INTERAKTIF ───────── */
+    .calc {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px 26px 28px;
+      margin: 36px 0;
+    }
+    .calc-head {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text2);
+      margin-bottom: 4px;
+    }
+    .calc-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--heading);
+      margin-bottom: 20px;
+    }
+    .calc-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: 'DM Sans', sans-serif;
+      margin-bottom: 8px;
+    }
+    .calc-row label { font-size: 14px; color: var(--text2); font-weight: 500; }
+    .calc-age {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      line-height: 1;
+      color: var(--accent);
+    }
+    .calc-age span { font-size: 1rem; font-family: 'DM Sans', sans-serif; color: var(--text2); margin-left: 4px; }
+
+    .calc input[type=range] {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 6px; border-radius: 5px;
+      background: var(--steel-soft);
+      outline: none; margin: 14px 0 8px; cursor: pointer;
+    }
+    .calc input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--accent); border: 3px solid var(--bg);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3); cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .calc input[type=range]::-webkit-slider-thumb:active { transform: scale(1.15); }
+    .calc input[type=range]::-moz-range-thumb {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--accent); border: 3px solid var(--bg);
+      cursor: pointer;
+    }
+
+    /* denyut pemancing pada thumb (berhenti setelah disentuh) */
+    .calc.untouched input[type=range]::-webkit-slider-thumb { animation: thumbPulse 1.6s ease-in-out infinite; }
+    .calc.untouched input[type=range]::-moz-range-thumb { animation: thumbPulse 1.6s ease-in-out infinite; }
+    @keyframes thumbPulse {
+      0%, 100% { box-shadow: 0 2px 8px rgba(0,0,0,0.3), 0 0 0 0 var(--accent-soft); }
+      50%      { box-shadow: 0 2px 8px rgba(0,0,0,0.3), 0 0 0 12px var(--accent-soft); }
+    }
+
+    /* label "geser saya" mengambang */
+    .calc-hint {
+      position: relative;
+      height: 0;
+      text-align: center;
+      pointer-events: none;
+    }
+    .calc-hint span {
+      position: absolute;
+      left: 50%; top: -2px;
+      transform: translateX(-50%);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      background: var(--bg);
+      padding: 3px 12px; border-radius: 20px;
+      border: 1px solid var(--border-accent);
+      white-space: nowrap;
+      animation: hintFloat 1.8s ease-in-out infinite;
+      transition: opacity 0.3s;
+    }
+    @keyframes hintFloat {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(-5px); }
+    }
+    .calc.touched .calc-hint span { opacity: 0; }
+
+    .calc-scale {
+      display: flex; justify-content: space-between;
+      font-family: 'DM Sans', sans-serif; font-size: 11px;
+      color: var(--text2); margin-bottom: 22px;
+    }
+
+    /* bar hukuman */
+    .calc-barwrap {
+      position: relative;
+      background: var(--steel-soft);
+      border-radius: 8px;
+      height: 56px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .calc-bar {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-deep), var(--accent));
+      border-radius: 8px;
+      display: flex; align-items: center; padding-left: 16px;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem;
+      color: #fff; letter-spacing: 1px;
+      transition: width 0.35s cubic-bezier(.4,0,.2,1), background 0.35s;
+      white-space: nowrap;
+    }
+    /* garis batas 20 tahun */
+    .calc-limit {
+      position: absolute; top: -4px; bottom: -4px;
+      left: 50%;        /* 20 dari skala 0..40 = 50% */
+      width: 2px;
+      background: var(--heading);
+      opacity: 0.55;
+      z-index: 3;
+    }
+    .calc-limit::after {
+      content: 'batas 20 thn';
+      position: absolute; top: -20px; left: 50%;
+      transform: translateX(-50%);
+      font-family: 'DM Sans', sans-serif; font-size: 10px;
+      letter-spacing: 0.05em; color: var(--text2); white-space: nowrap;
+    }
+    .calc-foot {
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      line-height: 1.6; margin-top: 18px;
+      padding: 14px 16px; border-radius: 10px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .calc-foot.ok    { background: var(--steel-soft); color: var(--text2); }
+    .calc-foot.viol  { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--border-accent); }
+    .calc-foot strong { color: inherit; }
+    .calc-stamp {
+      display: inline-block;
+      font-family: 'DM Sans', sans-serif; font-weight: 800;
+      font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #fff; background: var(--accent-deep);
+      padding: 3px 10px; border-radius: 4px; margin-right: 8px;
+      transform: rotate(-1.5deg);
+    }
+    .calc-stamp.slam { animation: stampSlam 0.4s cubic-bezier(.2,1.4,.4,1); }
+    @keyframes stampSlam {
+      0%   { transform: rotate(-1.5deg) scale(2.4); opacity: 0; }
+      60%  { transform: rotate(-1.5deg) scale(0.9); opacity: 1; }
+      100% { transform: rotate(-1.5deg) scale(1); }
+    }
+    .calc-bar.shake { animation: barShake 0.32s ease; }
+    @keyframes barShake {
+      0%,100% { margin-left: 0; }
+      20% { margin-left: -3px; } 40% { margin-left: 3px; }
+      60% { margin-left: -2px; } 80% { margin-left: 2px; }
+    }
+
+    /* ───────── PULL QUOTE ───────── */
+    .pull {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.2rem, 3vw, 1.5rem);
+      line-height: 1.5;
+      color: var(--heading);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 0;
+      margin: 36px 0;
+      text-align: center;
+    }
+
+    /* ───────── REFERENCES ───────── */
+    .refs {
+      margin-top: 56px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+    .refs h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text2);
+      margin-bottom: 16px;
+    }
+    .refs ul { list-style: none; }
+    .refs li {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text2);
+      padding: 7px 0 7px 20px;
+      position: relative;
+      line-height: 1.55;
+    }
+    .refs li::before {
+      content: '§';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ───────── RESPONSIVE ───────── */
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .wrap { padding: 0 16px 64px; }
+      .hero { min-height: 78vh; }
+      .hero-content { padding: 3.4rem 22px 3rem; }
+      .answer, .law { padding: 20px 18px; }
+      .lead-quote { margin: 40px auto 4px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ───────── HERO (full-bleed) ───────── -->
+  <header class="hero">
+    <!-- SVG Opsi A sebagai latar yang menyatu: jeruji + garis waktu VONIS memudar tanpa ujung -->
+    <div class="hero-bg-art" aria-hidden="true">
+      <svg viewBox="0 0 1440 820" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="heroTime" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#c14138" stop-opacity="0.95"/>
+            <stop offset="0.5" stop-color="#7c8694" stop-opacity="0.6"/>
+            <stop offset="1" stop-color="#7c8694" stop-opacity="0"/>
+          </linearGradient>
+          <radialGradient id="heroGlow" cx="0.18" cy="0.7" r="0.7">
+            <stop offset="0" stop-color="#c14138" stop-opacity="0.18"/>
+            <stop offset="1" stop-color="#c14138" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- glow merah-bata lembut di area judul -->
+        <rect width="1440" height="820" fill="url(#heroGlow)"/>
+
+        <!-- garis waktu membentang dari VONIS lalu memudar tanpa ujung -->
+        <g transform="translate(0,560)">
+          <line x1="160" y1="0" x2="1440" y2="0" stroke="url(#heroTime)" stroke-width="3"/>
+          <circle cx="160" cy="0" r="10" fill="#c14138"/>
+          <circle cx="160" cy="0" r="19" fill="none" stroke="#c14138" stroke-width="1.5" opacity="0.45"/>
+          <text x="160" y="-34" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="17" font-weight="700" letter-spacing="3" fill="#e7ebf0">VONIS</text>
+
+          <g font-family="DM Sans, sans-serif" font-size="13" fill="#8b97a7">
+            <line x1="430" y1="-9" x2="430" y2="9" stroke="#7c8694" stroke-width="2" opacity="0.75"/>
+            <text x="430" y="32" text-anchor="middle" opacity="0.75">10 thn</text>
+            <line x1="700" y1="-9" x2="700" y2="9" stroke="#7c8694" stroke-width="2" opacity="0.5"/>
+            <text x="700" y="32" text-anchor="middle" opacity="0.5">20 thn</text>
+            <line x1="970" y1="-8" x2="970" y2="8" stroke="#7c8694" stroke-width="2" opacity="0.28"/>
+            <text x="970" y="32" text-anchor="middle" opacity="0.28">30 thn</text>
+            <line x1="1190" y1="-7" x2="1190" y2="7" stroke="#7c8694" stroke-width="2" opacity="0.14"/>
+            <text x="1300" y="14" font-family="Playfair Display, serif" font-size="46" fill="#7c8694" opacity="0.35">&#8734;</text>
+          </g>
+        </g>
+
+        <!-- jeruji penjara di latar depan (kesan melihat dari balik sel) -->
+        <g stroke="#5b6776" stroke-width="16" opacity="0.34">
+          <line x1="120"  y1="0" x2="120"  y2="820"/>
+          <line x1="310"  y1="0" x2="310"  y2="820"/>
+          <line x1="500"  y1="0" x2="500"  y2="820"/>
+          <line x1="690"  y1="0" x2="690"  y2="820"/>
+          <line x1="880"  y1="0" x2="880"  y2="820"/>
+          <line x1="1070" y1="0" x2="1070" y2="820"/>
+          <line x1="1260" y1="0" x2="1260" y2="820"/>
+          <line x1="1430" y1="0" x2="1430" y2="820"/>
+        </g>
+        <g stroke="#5b6776" stroke-width="12" opacity="0.34">
+          <line x1="0" y1="70"  x2="1440" y2="70"/>
+          <line x1="0" y1="760" x2="1440" y2="760"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="hero-content">
+      <span class="eyebrow">Hukum &amp; Politik</span>
+      <h1>Penjara Seumur Hidup:<br><em>Sampai Mati</em>, Bukan Seumur Pelaku</h1>
+      <p class="hero-sub">Membongkar satu kesalahpahaman hukum yang awet bertahan di ruang debat publik.</p>
+      <div class="hero-meta">
+        <span class="pill">KBDI</span>
+        <span>Komunitas Belajar Daring Indonesia</span>
+        <span>&middot;</span>
+        <span>± 6 menit baca</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ───────── OPENING ───────── -->
+    <p class="lead-quote">&ldquo;Aku mencintaimu seumur hidupku.&rdquo;</p>
+
+    <p>Tidak ada satu pun orang yang mendengar kalimat itu lalu berpikir, &ldquo;Oh, karena usiaku 23 tahun, berarti kamu hanya mencintaiku sampai usia 46.&rdquo; Dalam bahasa Indonesia sehari-hari, makna &ldquo;seumur hidup&rdquo; sudah jelas tanpa perlu dijelaskan: <strong>sampai mati.</strong> Sampai napas terakhir.</p>
+
+    <p>Tapi anehnya, begitu frasa yang sama masuk ke ruang sidang &mdash; &ldquo;penjara seumur hidup&rdquo; &mdash; sebagian orang tiba-tiba menafsirkannya dengan rumus aritmetika: ambil usia pelaku saat divonis, lalu jadikan itu lama hukuman. Perdebatan ini bahkan ramai di media sosial, dan ironisnya tak jarang melibatkan sesama mahasiswa hukum yang saling ngotot dengan jawaban berbeda.</p>
+
+    <p>Jadi, mana yang benar?</p>
+
+    <!-- ───────── JAWABAN SINGKAT ───────── -->
+    <h2>Jawaban Singkatnya</h2>
+
+    <div class="answer">
+      <p><strong>Penjara seumur hidup berarti terpidana mendekam di penjara sampai ia meninggal dunia secara alamiah.</strong> Bukan dihitung dari usianya saat vonis dijatuhkan. Ia menghabiskan sisa hidupnya di balik jeruji &mdash; entah lima tahun lagi, entah lima puluh tahun lagi.</p>
+    </div>
+
+    <p>Ini bukan tafsir bebas. Ada dasar hukumnya yang tegas, baik di KUHP lama maupun KUHP baru.</p>
+
+    <!-- ───────── ASAL SALAH PAHAM ───────── -->
+    <h2>Dari Mana Datangnya Salah Paham Ini?</h2>
+
+    <p>Akar kesalahpahamannya sederhana: kata &ldquo;umur&rdquo; di dalam frasa &ldquo;seumur hidup&rdquo; dianggap merujuk pada <strong>angka usia pelaku</strong>, bukan pada <strong>rentang hidupnya</strong>.</p>
+
+    <p>Tafsir keliru itu kira-kira begini: kalau seseorang divonis &ldquo;seumur hidup&rdquo; pada usia 25 tahun, maka ia dipenjara 25 tahun, lalu bebas. Seolah-olah angka usia saat vonis menjadi patokan lamanya hukuman.</p>
+
+    <p>Padahal, kalau kita konsisten dengan logika bahasa, &ldquo;seumur hidup&rdquo; justru berarti <em>sepanjang umur hidupnya</em> &mdash; dan umur hidup seseorang baru selesai ketika ia meninggal. Sama persis dengan makna &ldquo;seumur hidup&rdquo; dalam janji cinta tadi.</p>
+
+    <!-- ───────── DASAR HUKUM ───────── -->
+    <h2>Apa Kata Undang-Undang</h2>
+
+    <p>Mari kita lihat aturannya langsung, karena di sinilah tafsir keliru itu benar-benar runtuh.</p>
+
+    <div class="law">
+      <span class="law-tag">KUHP Lama &middot; Pasal 12</span>
+      <p>Pidana penjara terdiri dari dua jenis: <strong>seumur hidup</strong> atau <strong>selama waktu tertentu</strong>. Untuk yang &ldquo;waktu tertentu&rdquo;, ada batas tegas &mdash; <span class="quote">pidana penjara selama waktu tertentu sekali-kali tidak boleh melebihi dua puluh tahun.</span></p>
+    </div>
+
+    <div class="law">
+      <span class="law-tag">KUHP Baru &middot; UU No. 1 Tahun 2023 &middot; Pasal 68</span>
+      <p>Berlaku resmi sejak 2 Januari 2026, mengatur hal serupa: pidana penjara dijatuhkan untuk seumur hidup atau untuk waktu tertentu, dan <span class="quote">pidana penjara untuk waktu tertentu tidak boleh dijatuhkan lebih dari 20 tahun.</span></p>
+    </div>
+
+    <p>Sekarang perhatikan jebakan logikanya. Kalau &ldquo;seumur hidup&rdquo; diartikan &ldquo;lama hukuman = usia pelaku saat divonis&rdquo;, maka hukuman itu sebenarnya berubah menjadi <strong>pidana waktu tertentu</strong> dengan angka pasti. Dan begitu ia jadi pidana waktu tertentu, ia langsung tertabrak batas 20 tahun.</p>
+
+    <p>Contoh: seseorang divonis pada usia 25 tahun. Dengan tafsir keliru, ia harus dipenjara 25 tahun. Tapi 25 tahun <strong>sudah melanggar undang-undang</strong>, karena melebihi batas maksimal pidana waktu tertentu. Tafsir itu mustahil dijalankan tanpa melanggar hukum itu sendiri.</p>
+
+    <p>Ahli hukum pidana Roeslan Saleh dalam <em>Stelsel Pidana Indonesia</em> (1987) sudah menegaskan jauh-jauh hari: pidana penjara seumur hidup adalah penjara yang dijalani terpidana sepanjang hidupnya &mdash; dengan kata lain, terpidana berada di penjara sampai maut menjemputnya.</p>
+
+    <!-- ───────── LOGIKA + SVG ILUSTRASI ───────── -->
+    <h2>Logika yang Membuat Tafsir Keliru Itu Ambruk</h2>
+
+    <p>Andai tafsir &ldquo;dipenjara sesuai usia saat divonis&rdquo; itu benar, kita akan menghadapi keanehan ini: dua orang melakukan kejahatan yang <strong>persis sama</strong>, tapi hukumannya timpang jauh hanya karena beda usia.</p>
+
+    <!-- KALKULATOR INTERAKTIF: buktikan sendiri kenapa tafsir keliru itu mustahil -->
+    <div class="calc untouched" id="calc">
+      <div class="calc-head">Coba sendiri</div>
+      <div class="calc-title">Berapa usiamu? Geser dan lihat berapa lama kamu &ldquo;dipenjara&rdquo; menurut tafsir keliru ini.</div>
+
+      <div class="calc-row">
+        <label for="ageSlider">Usia pelaku saat divonis</label>
+        <div class="calc-age"><span id="ageVal">25</span><span>tahun</span></div>
+      </div>
+      <input type="range" id="ageSlider" min="12" max="40" value="25" step="1" aria-label="Usia pelaku saat divonis" />
+      <div class="calc-hint"><span>&larr; geser saya &rarr;</span></div>
+      <div class="calc-scale"><span>12 thn</span><span>40 thn</span></div>
+
+      <div class="calc-barwrap">
+        <div class="calc-limit"></div>
+        <div class="calc-bar" id="calcBar">25 TAHUN</div>
+      </div>
+
+      <div class="calc-foot ok" id="calcFoot">
+        Geser slider di atas untuk melihat berapa lama hukuman menurut tafsir keliru ini.
+      </div>
+    </div>
+
+    <p>Coba geser sendiri di atas. Begitu angka usia melewati <strong>20 tahun</strong>, tafsir itu langsung menabrak tembok: pidana penjara waktu tertentu tidak boleh lebih dari 20 tahun. Padahal seseorang bisa saja divonis pada usia 25, 30, bahkan 40 tahun &mdash; dan di situlah seluruh logika tafsir keliru itu runtuh.</p>
+
+    <p>Masalah keduanya soal keadilan. Bayangkan dua orang dengan kejahatan yang <strong>persis sama</strong>: yang satu berusia 17 tahun, yang satu 40 tahun. Dengan tafsir keliru, si remaja hanya dipenjara 17 tahun, sementara yang lebih tua dipenjara 40 tahun. Kejahatannya identik, tapi hukumannya timpang jauh &mdash; semata karena beda usia. Yang lebih muda justru &ldquo;diuntungkan&rdquo;. Tidak ada konsep keadilan mana pun yang bisa membenarkan ini, dan tidak ada satu sistem hukum di dunia yang menerapkan model semacam itu.</p>
+
+    <p>Lagipula, kalau hakim memang ingin menghukum seseorang selama 17 tahun, ia tinggal menjatuhkan vonis 17 tahun secara langsung. Tidak perlu menyebutnya &ldquo;seumur hidup&rdquo;. Keberadaan istilah &ldquo;seumur hidup&rdquo; sebagai kategori terpisah justru menjadi bukti bahwa maknanya <strong>berbeda</strong> dari sekadar angka tahun &mdash; ia memang dimaksudkan sebagai hukuman sepanjang sisa hidup.</p>
+
+    <!-- ───────── KENAPA TIDAK DIHUKUM MATI ───────── -->
+    <h2>&ldquo;Kenapa Tidak Sekalian Dihukum Mati Saja?&rdquo;</h2>
+
+    <p>Begitu paham bahwa penjara seumur hidup berarti membiayai terpidana sampai ia tua dan mati, muncul pertanyaan lanjutan yang sering ramai di kolom komentar: bukankah lebih murah dihukum mati saja, sekali eksekusi lalu selesai?</p>
+
+    <p>Terdengar masuk akal &mdash; tapi premis &ldquo;lebih murah&rdquo; itu justru keliru. Berbagai penelitian menunjukkan hukuman mati ternyata <strong>lebih mahal</strong>, berkisar 2,5 hingga 5 kali lipat dibanding penjara seumur hidup. Penyebabnya bukan eksekusinya, melainkan proses hukum berlapis &mdash; banding, kasasi, peninjauan kembali, grasi &mdash; yang bisa memakan belasan tahun, dan selama itu terpidana tetap ditanggung negara.</p>
+
+    <!-- SVG: perbandingan biaya hukuman mati vs seumur hidup -->
+    <figure class="figure">
+      <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram batang perbandingan biaya: hukuman mati 2,5 sampai 5 kali lipat lebih mahal dibanding penjara seumur hidup">
+        <defs>
+          <linearGradient id="costBg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="var(--bg2)"/>
+            <stop offset="1" stop-color="var(--bg)"/>
+          </linearGradient>
+          <linearGradient id="costDeath" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="var(--accent)"/>
+            <stop offset="1" stop-color="var(--accent-deep)"/>
+          </linearGradient>
+        </defs>
+        <rect width="800" height="400" fill="url(#costBg)"/>
+
+        <text x="60" y="50" font-family="DM Sans, sans-serif" font-size="13" font-weight="700" letter-spacing="2" fill="var(--text2)">BIAYA RELATIF KE NEGARA</text>
+
+        <!-- baris dasar -->
+        <line x1="60" y1="330" x2="740" y2="330" stroke="var(--border)" stroke-width="1.5"/>
+
+        <!-- bar SEUMUR HIDUP (rendah) -->
+        <g>
+          <rect x="120" y="250" width="200" height="80" rx="6" fill="var(--steel)" opacity="0.55"/>
+          <text x="220" y="298" text-anchor="middle" font-family="Bebas Neue, sans-serif" font-size="30" fill="#fff">1&times;</text>
+          <text x="220" y="360" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="14" font-weight="600" fill="var(--text)">Penjara Seumur Hidup</text>
+        </g>
+
+        <!-- bar HUKUMAN MATI (tinggi) -->
+        <g>
+          <rect x="480" y="90" width="200" height="240" rx="6" fill="url(#costDeath)"/>
+          <text x="580" y="135" text-anchor="middle" font-family="Bebas Neue, sans-serif" font-size="34" fill="#fff">2,5&ndash;5&times;</text>
+          <text x="580" y="360" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="14" font-weight="600" fill="var(--text)">Hukuman Mati</text>
+        </g>
+
+        <!-- badge California -->
+        <g>
+          <rect x="500" y="58" width="240" height="26" rx="13" fill="var(--accent-soft)" stroke="var(--border-accent)"/>
+          <text x="620" y="76" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" font-weight="600" fill="var(--accent)">California: +US$4 miliar sejak 1978</text>
+        </g>
+      </svg>
+      <figcaption>Justru lebih mahal. Biaya membengkak bukan karena eksekusi, melainkan <strong>proses hukum berlapis</strong> yang memakan waktu belasan tahun.</figcaption>
+    </figure>
+
+    <p>Di luar biaya, ada beban yang lebih berat: <strong>risiko salah hukum.</strong> Sejak 1973, lebih dari 200 terpidana mati di Amerika Serikat akhirnya terbukti tak bersalah dan dibebaskan. Bayangkan jika satu saja sudah terlanjur dieksekusi &mdash; tidak ada yang bisa mengembalikan nyawa.</p>
+
+    <p class="pull">Inilah keunggulan moral penjara seumur hidup: ia tetap hukuman yang sangat berat, tapi menyisakan ruang koreksi seandainya keadilan ternyata keliru.</p>
+
+    <p>Meski begitu, sebagian orang menilai sebaliknya &mdash; menua dan mati pelan-pelan di sel tanpa harapan bebas justru dianggap lebih menyiksa daripada mati cepat. Perdebatan ini tak akan selesai, karena menyangkut nilai yang dianut masing-masing.</p>
+
+    <!-- ───────── PENUTUP ───────── -->
+    <h2>Penutup</h2>
+
+    <p>Kesalahpahaman tentang &ldquo;penjara seumur hidup&rdquo; mungkin terlihat sepele &mdash; sekadar salah tafsir satu frasa. Tapi ia mengingatkan kita pada sesuatu yang lebih besar: betapa mudahnya makna hukum dipelintir ketika literasi hukum rendah, bahkan di kalangan yang seharusnya paham.</p>
+
+    <p>Padahal jawabannya sudah ada di depan mata, dalam bahasa yang kita pakai setiap hari. &ldquo;Seumur hidup&rdquo; ya berarti seumur hidup &mdash; sampai mati. Sama persis maknanya, baik di puisi cinta maupun di vonis pengadilan. Yang membedakan hanya satu: di pengadilan, ia bukan janji manis, melainkan akhir dari kebebasan.</p>
+
+    <!-- ───────── REFERENSI ───────── -->
+    <div class="refs">
+      <h3>Referensi</h3>
+      <ul>
+        <li>UU No. 1 Tahun 1946 (KUHP lama), Pasal 12</li>
+        <li>UU No. 1 Tahun 2023 tentang KUHP, Pasal 68</li>
+        <li>Roeslan Saleh, <em>Stelsel Pidana Indonesia</em> (1987)</li>
+        <li>Kompas.com &mdash; <a href="https://amp.kompas.com/tren/read/2023/03/21/063000165/arti-penjara-seumur-hidup-menurut-kuhp-lama-dan-baru-dipenjara-berapa-lama-" target="_blank" rel="noopener">Arti Penjara Seumur Hidup Menurut KUHP Lama dan Baru, Dipenjara Berapa Lama?</a></li>
+        <li>Death Penalty Information Center &mdash; <a href="https://deathpenaltyinfo.org/what-to-know-costs-and-the-death-penalty" target="_blank" rel="noopener">What to Know: Costs and the Death Penalty</a></li>
+        <li>USC Gould School of Law &mdash; <a href="https://gould.usc.edu/news/the-high-cost-of-a-death-sentence/" target="_blank" rel="noopener">The High Cost of a Death Sentence</a></li>
+        <li>Innocence Project &mdash; <a href="https://innocenceproject.org/innocence-and-the-death-penalty/" target="_blank" rel="noopener">Innocence and the Death Penalty</a></li>
+      </ul>
+    </div>
+
+  </main>
+
+  <!-- ───────── INTERAKTIVITAS: KALKULATOR + ANIMASI HERO ───────── -->
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ── B1: Kalkulator Usia → Hukuman ── */
+      var calc   = document.getElementById('calc');
+      var slider = document.getElementById('ageSlider');
+      var ageVal = document.getElementById('ageVal');
+      var bar    = document.getElementById('calcBar');
+      var foot   = document.getElementById('calcFoot');
+      var MIN = 12, MAX = 40, LIMIT = 20;
+      var wasViol = false;
+
+      function render(age, animate) {
+        ageVal.textContent = age;
+        var pct = (age / MAX) * 100;          // skala 0..40 thn
+        bar.style.width = pct + '%';
+        bar.textContent = age + ' TAHUN';
+        var isViol = age > LIMIT;
+        if (isViol) {
+          foot.className = 'calc-foot viol';
+          foot.innerHTML = '<span class="calc-stamp">Melanggar</span> Hukuman ' + age +
+            ' tahun melampaui batas <strong>20 tahun</strong> (Pasal 12 KUHP lama / Pasal 68 KUHP baru). ' +
+            'Tafsir ini mustahil dijalankan tanpa melanggar undang-undang.';
+          // efek dramatis hanya saat baru melewati batas
+          if (animate && !wasViol) {
+            var stamp = foot.querySelector('.calc-stamp');
+            if (stamp) { void stamp.offsetWidth; stamp.classList.add('slam'); }
+            bar.classList.remove('shake'); void bar.offsetWidth; bar.classList.add('shake');
+          }
+        } else {
+          foot.className = 'calc-foot ok';
+          foot.innerHTML = 'Hukuman ' + age + ' tahun masih di bawah batas 20 tahun&hellip; ' +
+            'tapi geser sedikit lagi ke usia di atas 20, dan lihat apa yang terjadi.';
+        }
+        wasViol = isViol;
+      }
+
+      function markTouched() {
+        if (calc) { calc.classList.remove('untouched'); calc.classList.add('touched'); }
+      }
+
+      if (slider) {
+        slider.addEventListener('input', function () {
+          markTouched();
+          render(parseInt(this.value, 10), true);
+        });
+        render(parseInt(slider.value, 10), false);
+
+        /* ── 2: Auto-demo sekali jalan saat kalkulator masuk layar ── */
+        if (!reduce && 'IntersectionObserver' in window) {
+          var demoed = false;
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting && !demoed && calc.classList.contains('untouched')) {
+                demoed = true;
+                var seq = [27, 30, 33, 35, 33, 30, 27, 25];
+                var i = 0;
+                var tick = setInterval(function () {
+                  if (calc.classList.contains('touched')) { clearInterval(tick); return; }
+                  slider.value = seq[i];
+                  render(seq[i], true);
+                  i++;
+                  if (i >= seq.length) clearInterval(tick);
+                }, 360);
+              }
+            });
+          }, { threshold: 0.55 });
+          io.observe(calc);
+        }
+      }
+
+      /* ── A1: Garis waktu hero "menggambar" + partikel debu ── */
+      if (!reduce) {
+        var line = document.querySelector('.hero-bg-art line[stroke^="url"]');
+        if (line) {
+          var len = 1280;
+          line.style.strokeDasharray = len;
+          line.style.strokeDashoffset = len;
+          line.style.transition = 'stroke-dashoffset 1.6s ease 0.3s';
+          requestAnimationFrame(function () { line.style.strokeDashoffset = 0; });
+        }
+        // partikel debu melayang halus
+        var art = document.querySelector('.hero-bg-art svg');
+        if (art) {
+          var ns = 'http://www.w3.org/2000/svg';
+          for (var i = 0; i < 22; i++) {
+            var c = document.createElementNS(ns, 'circle');
+            var x = Math.random() * 1440, y = Math.random() * 820;
+            var r = Math.random() * 2 + 0.6;
+            c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', r);
+            c.setAttribute('fill', '#c8d0da');
+            c.setAttribute('opacity', (Math.random() * 0.25 + 0.05).toFixed(2));
+            var dur = (Math.random() * 6 + 6).toFixed(1);
+            var dy = (Math.random() * 40 + 20).toFixed(0);
+            var anim = document.createElementNS(ns, 'animateTransform');
+            anim.setAttribute('attributeName', 'transform');
+            anim.setAttribute('type', 'translate');
+            anim.setAttribute('values', '0 0; 0 -' + dy + '; 0 0');
+            anim.setAttribute('dur', dur + 's');
+            anim.setAttribute('repeatCount', 'indefinite');
+            anim.setAttribute('begin', (Math.random() * 4).toFixed(1) + 's');
+            c.appendChild(anim);
+            art.appendChild(c);
+          }
+        }
+      }
+    })();
+  </script>
+
+  <!-- ───────── HEADER & FOOTER VIA FETCH ───────── -->
+  <script>
+    const savedTheme = localStorage.getItem('kbdi-theme');
+    if (savedTheme === 'light') document.documentElement.classList.add('light');
+
+    fetch('https://edukbdi.github.io/header.html')
+      .then(r => r.text())
+      .then(html => {
+        document.body.insertAdjacentHTML('afterbegin', html);
+        const header = document.getElementById('kbdi-header');
+        if (savedTheme === 'light') header.classList.add('kbdi-light');
+        document.getElementById('kbdiThemeToggle').addEventListener('click', function() {
+          const isLight = document.documentElement.classList.toggle('light');
+          header.classList.toggle('kbdi-light', isLight);
+          localStorage.setItem('kbdi-theme', isLight ? 'light' : 'dark');
+          const footer = document.getElementById('kbdi-footer');
+          if (footer) footer.classList.toggle('kbdi-light', isLight);
+        });
+      });
+
+    fetch('https://edukbdi.github.io/footer.html')
+      .then(r => r.text())
+      .then(html => {
+        document.body.insertAdjacentHTML('beforeend', html);
+        const footer = document.getElementById('kbdi-footer');
+        if (footer && savedTheme === 'light') footer.classList.add('kbdi-light');
+      });
+  </script>
+
+</body>
+</html>
